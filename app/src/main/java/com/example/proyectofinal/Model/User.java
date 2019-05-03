@@ -13,11 +13,10 @@ public class User {
     public User() {
     }
 
-
-
-
-
-
+    public User(String nickname, String correo) {
+        this.nickname = nickname;
+        this.correo = correo;
+    }
 
     public String getNickname() {
         return nickname;

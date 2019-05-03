@@ -8,20 +8,16 @@ tools:context=".Fragments.ChatsFragment"
 
 
     <SearchView
-        android:id="@+id/search_chat"
+        android:id="@+id/search_contact"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         />
 
     <android.support.v7.widget.RecyclerView
         android:foregroundGravity="center_vertical"
-        android:id="@+id/lista_chats"
+        android:id="@+id/lista_contacts"
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
-
-
-
-
 
 
 </LinearLayout>

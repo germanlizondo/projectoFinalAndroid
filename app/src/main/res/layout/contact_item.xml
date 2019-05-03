@@ -26,7 +26,7 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/titleChat"
+                android:id="@+id/nickname"
                 android:layout_toRightOf="@+id/person_photo"
                 android:layout_alignParentTop="true"
                 android:textSize="30sp"
@@ -35,9 +35,9 @@
             <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/lastMessage"
+                android:id="@+id/email"
                 android:layout_toRightOf="@+id/person_photo"
-                android:layout_below="@+id/titleChat"
+                android:layout_below="@+id/nickname"
                 />
 
         </RelativeLayout>

@@ -2,30 +2,45 @@ package com.example.proyectofinal;
 
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
 import android.view.MenuItem;
 import android.widget.TextView;
 
+import com.example.proyectofinal.Fragments.ChatsFragment;
+import com.example.proyectofinal.Fragments.SettingsFragment;
+import com.example.proyectofinal.Fragments.ContactsFragment;
+
 public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
+    private  Fragment selectedFragment = null;
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
             = new BottomNavigationView.OnNavigationItemSelectedListener() {
 
         @Override
         public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+
             switch (item.getItemId()) {
                 case R.id.navigation_user:
-                    mTextMessage.setText(R.string.title_usuario);
+                    selectedFragment = new ContactsFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
+                            selectedFragment).commit();
                     return true;
                 case R.id.navigation_chats:
-                    mTextMessage.setText(R.string.title_chats);
+                    selectedFragment = new ChatsFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
+                            selectedFragment).commit();
                     return true;
                 case R.id.navigation_settings:
-                    mTextMessage.setText(R.string.title_settings);
+                    selectedFragment = new SettingsFragment();
+                    getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
+                            selectedFragment).commit();
                     return true;
             }
+
+
             return false;
         }
     };
@@ -37,6 +52,11 @@ public class MainActivity extends AppCompatActivity {
         BottomNavigationView navView = findViewById(R.id.nav_view);
         mTextMessage = findViewById(R.id.message);
         navView.setOnNavigationItemSelectedListener(mOnNavigationItemSelectedListener);
+
+
+        selectedFragment = new ContactsFragment();
+        getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
+                selectedFragment).commit();
     }
 
 }
