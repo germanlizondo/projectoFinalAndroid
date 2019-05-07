@@ -3,12 +3,14 @@ package com.example.proyectofinal.Fragments;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 
 import com.example.proyectofinal.Adapters.AdapterContactsList;
@@ -23,6 +25,7 @@ public class ContactsFragment extends Fragment {
     private ArrayList<Contact> listaContact;
     private ArrayList<Contact> finderLista;
     private RecyclerView recyclerView;
+    private SwipeRefreshLayout swipeRefreshLayout;
     private SearchView finder;
     private AdapterContactsList adapterContactsList;
 
@@ -65,7 +68,14 @@ public class ContactsFragment extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_contacts, container, false);
 
-
+        this.swipeRefreshLayout = view.findViewById(R.id.swipeRefreshLayout);
+        this.swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                Toast.makeText(getActivity(),"Refrescado",Toast.LENGTH_SHORT).show();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         this.recyclerView =  view.findViewById(R.id.lista_contacts);
         this.finder =  view.findViewById(R.id.search_contact);
 
