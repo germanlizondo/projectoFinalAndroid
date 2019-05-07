@@ -1,5 +1,7 @@
 package com.example.proyectofinal;
 
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
@@ -11,6 +13,9 @@ import android.widget.TextView;
 import com.example.proyectofinal.Fragments.ChatsFragment;
 import com.example.proyectofinal.Fragments.SettingsFragment;
 import com.example.proyectofinal.Fragments.ContactsFragment;
+
+import static android.Manifest.permission.CAMERA;
+import static android.Manifest.permission.WRITE_EXTERNAL_STORAGE;
 
 public class MainActivity extends AppCompatActivity {
     private TextView mTextMessage;
@@ -58,5 +63,7 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
                 selectedFragment).commit();
     }
+
+
 
 }
