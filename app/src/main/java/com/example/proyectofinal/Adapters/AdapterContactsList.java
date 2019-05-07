@@ -7,16 +7,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.example.proyectofinal.Model.User;
+import com.example.proyectofinal.Model.Contact;
 import com.example.proyectofinal.R;
 
 import java.util.ArrayList;
 
 public class AdapterContactsList extends RecyclerView.Adapter<AdapterContactsList.ChatViewHolder> {
 
-    private ArrayList<User> listaContacts;
+    private ArrayList<Contact> listaContacts;
 
-    public AdapterContactsList(ArrayList<User> listaContacts) {
+    public AdapterContactsList(ArrayList<Contact> listaContacts) {
         this.listaContacts = listaContacts;
     }
 
@@ -52,9 +52,9 @@ public class AdapterContactsList extends RecyclerView.Adapter<AdapterContactsLis
 
         }
 
-        public void asignarChat(User s) {
+        public void asignarChat(Contact s) {
             this.nickname.setText(s.getNickname());
-            this.email.setText(s.getCorreo());
+            this.email.setText(s.getEmail());
         }
     }
 }

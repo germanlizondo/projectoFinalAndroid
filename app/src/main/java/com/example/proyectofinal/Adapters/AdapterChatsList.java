@@ -7,16 +7,17 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.example.proyectofinal.Model.Chat;
 import com.example.proyectofinal.R;
 
 import java.util.ArrayList;
 
 public class AdapterChatsList extends RecyclerView.Adapter<AdapterChatsList.ChatViewHolder> implements View.OnClickListener {
 
-    private ArrayList<String> listaChat;
+    private ArrayList<Chat> listaChat;
     private View.OnClickListener listener;
 
-    public AdapterChatsList(ArrayList<String> listaChat) {
+    public AdapterChatsList(ArrayList<Chat> listaChat) {
         this.listaChat = listaChat;
     }
 
@@ -62,8 +63,8 @@ public class AdapterChatsList extends RecyclerView.Adapter<AdapterChatsList.Chat
 
         }
 
-        public void asignarChat(String s) {
-            this.titleChat.setText(s);
+        public void asignarChat(Chat s) {
+            this.titleChat.setText(s.getReceptor().getNickname());
         }
     }
 }

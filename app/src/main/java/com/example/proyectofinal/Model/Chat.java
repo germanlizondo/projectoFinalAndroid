@@ -4,27 +4,30 @@ import java.util.ArrayList;
 
 public class Chat {
 
-    private User transmitor;
-    private User receptor;
+    private UserClient transmitor;
+    private Contact receptor;
     private ArrayList<Mensaje> mensajes;
 
     public Chat() {
     }
 
+    public Chat(Contact receptor) {
+        this.receptor = receptor;
+    }
 
-    public User getTransmitor() {
+    public UserClient getTransmitor() {
         return transmitor;
     }
 
-    public void setTransmitor(User transmitor) {
+    public void setTransmitor(UserClient transmitor) {
         this.transmitor = transmitor;
     }
 
-    public User getReceptor() {
+    public Contact getReceptor() {
         return receptor;
     }
 
-    public void setReceptor(User receptor) {
+    public void setReceptor(Contact receptor) {
         this.receptor = receptor;
     }
 

@@ -9,11 +9,10 @@ import android.widget.SearchView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 
 import com.example.proyectofinal.Adapters.AdapterContactsList;
-import com.example.proyectofinal.Model.User;
+import com.example.proyectofinal.Model.Contact;
 import com.example.proyectofinal.R;
 
 import java.util.ArrayList;
@@ -21,8 +20,8 @@ import java.util.ArrayList;
 
 public class ContactsFragment extends Fragment {
 
-    private ArrayList<User> listaUsers;
-    private ArrayList<User> finderLista;
+    private ArrayList<Contact> listaContact;
+    private ArrayList<Contact> finderLista;
     private RecyclerView recyclerView;
     private SearchView finder;
     private AdapterContactsList adapterContactsList;
@@ -46,9 +45,9 @@ public class ContactsFragment extends Fragment {
 
 
     public void filterContacts(String filter){
-        this.finderLista = new ArrayList<>();
+        this.finderLista = new ArrayList<com.example.proyectofinal.Model.Contact>();
 
-        for (User u: this.listaUsers) {
+        for (Contact u: this.listaContact) {
             if(u.getNickname().startsWith(filter)){
                 this.finderLista.add(u);
             }
@@ -76,14 +75,14 @@ public class ContactsFragment extends Fragment {
 
 
         this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-        this.listaUsers = new ArrayList<User>();
+        this.listaContact = new ArrayList<com.example.proyectofinal.Model.Contact>();
 
 
         for (int x=0;x<50;x++){
 
-            this.listaUsers.add(new User("nickname"+x,"nickname"+x+"@gmail.com"));
+            this.listaContact.add(new Contact("nickname"+x,"nickname"+x+"@gmail.com"));
         }
-        this.adapterContactsList = new AdapterContactsList(this.listaUsers);
+        this.adapterContactsList = new AdapterContactsList(this.listaContact);
         this.recyclerView.setAdapter(adapterContactsList);
 
         return view;

@@ -10,10 +10,13 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.SearchView;
 
 import com.example.proyectofinal.Adapters.AdapterChatsList;
+import com.example.proyectofinal.Adapters.AdapterContactsList;
 import com.example.proyectofinal.ChatActivity;
+import com.example.proyectofinal.Model.Chat;
+import com.example.proyectofinal.Model.Contact;
 import com.example.proyectofinal.R;
 
 import java.util.ArrayList;
@@ -21,9 +24,25 @@ import java.util.ArrayList;
 
 public class ChatsFragment extends Fragment {
 
-    private ArrayList<String> listaChats;
+    private ArrayList<Chat> listaChats;
+    private ArrayList<Chat> filterChats;
     private RecyclerView recyclerView;
     private Intent intentChatActivity;
+    private SearchView finder;
+    private  AdapterChatsList adapterChatsList;
+
+    private SearchView.OnQueryTextListener listenerFinder = new SearchView.OnQueryTextListener() {
+        @Override
+        public boolean onQueryTextSubmit(String s) {
+            return false;
+        }
+
+        @Override
+        public boolean onQueryTextChange(String s) {
+            filterChats(finder.getQuery().toString());
+            return false;
+        }
+    };
 
 
     private View.OnClickListener listenerClickChat = new View.OnClickListener() {
@@ -40,21 +59,41 @@ public class ChatsFragment extends Fragment {
         // Required empty public constructor
     }
 
+    public void filterChats(String filter){
+        this.filterChats = new ArrayList<Chat>();
+
+        for (Chat u: this.listaChats) {
+            if(u.getReceptor().getNickname().startsWith(filter)){
+                this.filterChats.add(u);
+            }
+        }
+
+        this.adapterChatsList = new AdapterChatsList(this.filterChats);
+
+        adapterChatsList.setOnClickListener(listenerClickChat);
+        recyclerView.setAdapter(adapterChatsList);
+
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_chats, container, false);
 
-        recyclerView = (RecyclerView) view.findViewById(R.id.lista_chats);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+        this.recyclerView = (RecyclerView) view.findViewById(R.id.lista_chats);
+        this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+        this.finder = view.findViewById(R.id.search_chat);
+        this.finder.setOnQueryTextListener(listenerFinder);
 
-        this.listaChats = new ArrayList<>();
+
+
+        this.listaChats = new ArrayList<Chat>();
 
         for (int x=0;x<50;x++){
-            this.listaChats.add("HELLO THERE: "+x);
+            this.listaChats.add(new Chat(new Contact("german"+x,"email"+x)));
         }
-        AdapterChatsList adapterChatsList = new AdapterChatsList(this.listaChats);
+        this.adapterChatsList = new AdapterChatsList(this.listaChats);
 
         adapterChatsList.setOnClickListener(listenerClickChat);
         recyclerView.setAdapter(adapterChatsList);

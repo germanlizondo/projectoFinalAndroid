@@ -1,21 +1,16 @@
 package com.example.proyectofinal.Model;
 
-import java.util.ArrayList;
-
 public class User {
 
     private String nickname;
-    private String correo;
-    private String password;
-    private ArrayList<Chat> chats;
-    private ArrayList<User> amigos;
+    private String email;
 
     public User() {
     }
 
-    public User(String nickname, String correo) {
+    public User(String nickname, String email) {
         this.nickname = nickname;
-        this.correo = correo;
+        this.email = email;
     }
 
     public String getNickname() {
@@ -26,35 +21,11 @@ public class User {
         this.nickname = nickname;
     }
 
-    public String getCorreo() {
-        return correo;
+    public String getEmail() {
+        return email;
     }
 
-    public void setCorreo(String correo) {
-        this.correo = correo;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public ArrayList<Chat> getChats() {
-        return chats;
-    }
-
-    public void setChats(ArrayList<Chat> chats) {
-        this.chats = chats;
-    }
-
-    public ArrayList<User> getAmigos() {
-        return amigos;
-    }
-
-    public void setAmigos(ArrayList<User> amigos) {
-        this.amigos = amigos;
+    public void setEmail(String email) {
+        this.email = email;
     }
 }
