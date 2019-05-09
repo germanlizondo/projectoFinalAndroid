@@ -77,7 +77,7 @@ public class ContactsFragment extends Fragment {
             }
         });
         this.recyclerView =  view.findViewById(R.id.lista_contacts);
-        this.finder =  view.findViewById(R.id.search_contact);
+        this.finder =  view.findViewById(R.id.search_user);
 
         this.finder.setOnQueryTextListener(listenerFinder);
 
