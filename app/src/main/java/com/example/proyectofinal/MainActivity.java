@@ -76,6 +76,9 @@ public class MainActivity extends AppCompatActivity {
         selectedFragment = new ContactsFragment();
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
                 selectedFragment).commit();
+
+
+        startActivity(new Intent(this,LoginActivity.class));
     }
 
 

@@ -12,9 +12,10 @@ import com.example.proyectofinal.R;
 
 import java.util.ArrayList;
 
-public class AdapterContactsList extends RecyclerView.Adapter<AdapterContactsList.ChatViewHolder> {
+public class AdapterContactsList extends RecyclerView.Adapter<AdapterContactsList.ChatViewHolder> implements View.OnClickListener {
 
     private ArrayList<Contact> listaContacts;
+    private View.OnClickListener listener;
 
     public AdapterContactsList(ArrayList<Contact> listaContacts) {
         this.listaContacts = listaContacts;
@@ -24,6 +25,7 @@ public class AdapterContactsList extends RecyclerView.Adapter<AdapterContactsLis
     @Override
     public ChatViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
         View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.contact_item,null,false);
+        view.setOnClickListener(this);
         return new ChatViewHolder(view);
     }
 
@@ -37,6 +39,18 @@ public class AdapterContactsList extends RecyclerView.Adapter<AdapterContactsLis
     public int getItemCount() {
         return this.listaContacts.size();
     }
+
+    public void setOnClickListener(View.OnClickListener listener){
+        this.listener = listener;
+    }
+
+    @Override
+    public void onClick(View view) {
+        if(listener!=null){
+            listener.onClick(view);
+        }
+    }
+
 
     public class ChatViewHolder extends RecyclerView.ViewHolder {
 
