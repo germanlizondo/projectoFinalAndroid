@@ -1,5 +1,7 @@
 package com.example.proyectofinal.Model;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Mensaje {
@@ -54,7 +56,14 @@ public class Mensaje {
         return date;
     }
 
-    public void setDate(Date date) {
-        this.date = date;
+    public void setDate(String date) {
+        System.out.println(date);
+        SimpleDateFormat formatter1=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
+        try {
+            this.date=formatter1.parse(date);
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+
     }
 }

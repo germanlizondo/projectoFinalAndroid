@@ -9,7 +9,9 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import com.example.proyectofinal.Model.Mensaje;
+import com.example.proyectofinal.Model.User;
 import com.example.proyectofinal.R;
+import com.example.proyectofinal.Utilities.Session;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -19,9 +21,11 @@ public class AdapterListMesages extends RecyclerView.Adapter<AdapterListMesages.
     private ArrayList<Mensaje> mensajes;
     private static final int TYPE_ONE = 1;
     private static final int TYPE_TWO = 2;
+    private User nickname;
 
 
-    public AdapterListMesages(ArrayList<Mensaje> mensajes) {
+    public AdapterListMesages(ArrayList<Mensaje> mensajes, User nickname) {
+        this.nickname = nickname;
         this.mensajes = mensajes;
     }
 
@@ -53,7 +57,7 @@ public class AdapterListMesages extends RecyclerView.Adapter<AdapterListMesages.
         Mensaje mensaje = this.mensajes.get(position);
 
         Log.w("HELLO THERE: ",mensaje.getContent());
-        if (mensaje.getUser().getNickname().equals("german")) {
+        if (mensaje.getUser().getNickname().equals(nickname.getNickname())) {
             return TYPE_ONE;
         }  else {
             return TYPE_TWO;

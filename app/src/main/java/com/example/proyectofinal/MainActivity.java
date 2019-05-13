@@ -34,11 +34,13 @@ public class MainActivity extends AppCompatActivity {
             switch (item.getItemId()) {
                 case R.id.navigation_user:
                     selectedFragment = new ContactsFragment();
+                    selectedFragment.setArguments(bundle);
                     getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
                             selectedFragment).commit();
                     return true;
                 case R.id.navigation_chats:
                     selectedFragment = new ChatsFragment();
+                    selectedFragment.setArguments(bundle);
                     getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
                             selectedFragment).commit();
                     return true;
