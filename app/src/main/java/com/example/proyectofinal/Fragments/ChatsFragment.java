@@ -103,7 +103,7 @@ public class ChatsFragment extends Fragment {
         this.listaChats = new ArrayList<Chat>();
 
         for (int x=0;x<50;x++){
-            this.listaChats.add(new Chat(new Contact("german"+x,"email"+x)));
+            this.listaChats.add(new Chat(new Contact("german"+x,"email"+x,x+"123")));
         }
         this.adapterChatsList = new AdapterChatsList(this.listaChats);
 

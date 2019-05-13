@@ -1,14 +1,18 @@
 package com.example.proyectofinal.Model;
 
-public class User {
+import java.io.Serializable;
 
+public class User implements Serializable {
+
+    private String id;
     private String nickname;
     private String email;
 
     public User() {
     }
 
-    public User(String nickname, String email) {
+    public User(String nickname, String email,String id) {
+        this.id = id;
         this.nickname = nickname;
         this.email = email;
     }
@@ -27,5 +31,13 @@ public class User {
 
     public void setEmail(String email) {
         this.email = email;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 }

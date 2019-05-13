@@ -1,6 +1,7 @@
 package com.example.proyectofinal.Fragments;
 
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.widget.SwipeRefreshLayout;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 
 import com.example.proyectofinal.Adapters.AdapterContactsList;
 import com.example.proyectofinal.Model.Contact;
+import com.example.proyectofinal.ProfileUserActivity;
 import com.example.proyectofinal.R;
 
 import java.util.ArrayList;
@@ -42,6 +44,15 @@ public class ContactsFragment extends Fragment {
         }
     };
 
+    private View.OnClickListener listenerClickChat = new View.OnClickListener() {
+        @Override
+        public void onClick(View view) {
+            Intent intent = new Intent(getActivity(), ProfileUserActivity.class);
+            intent.putExtra("nickname",listaContact.get(recyclerView.getChildAdapterPosition(view)).getNickname());
+            startActivity(intent);
+          //   Toast.makeText(getContext(),listaContact.get(recyclerView.getChildAdapterPosition(view)).getNickname(),Toast.LENGTH_SHORT).show();
+        }
+    };
     public ContactsFragment() {
         // Required empty public constructor
     }
@@ -85,18 +96,23 @@ public class ContactsFragment extends Fragment {
 
 
         this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
+
         this.listaContact = new ArrayList<com.example.proyectofinal.Model.Contact>();
 
 
         for (int x=0;x<50;x++){
 
-            this.listaContact.add(new Contact("nickname"+x,"nickname"+x+"@gmail.com"));
+            this.listaContact.add(new Contact("nickname"+x,"nickname"+x+"@gmail.com",x+"1234566"));
         }
         this.adapterContactsList = new AdapterContactsList(this.listaContact);
+        this.adapterContactsList.setOnClickListener(listenerClickChat);
+
         this.recyclerView.setAdapter(adapterContactsList);
 
         return view;
     }
+
+    
 
 
 

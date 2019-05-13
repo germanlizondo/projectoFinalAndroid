@@ -16,10 +16,13 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 
 import com.android.volley.AuthFailureError;
@@ -29,7 +32,9 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.proyectofinal.Model.UserClient;
 import com.example.proyectofinal.R;
+import com.example.proyectofinal.Utilities.BackendConection;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -49,6 +54,10 @@ public class SettingsFragment extends Fragment {
     private static final int PERMIS_CAMARA = 200;
     private ImageView imagen;
     private  String path = "";
+    private RequestQueue mRequestQueue;
+    private UserClient user;
+
+    private TextView nickname;
 
     public SettingsFragment() {
         // Required empty public constructor
@@ -59,18 +68,19 @@ public class SettingsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
-
+        this.mRequestQueue = Volley.newRequestQueue(getActivity());
         this.imagen = view.findViewById(R.id.imagenprofile);
+
+        this.nickname = view.findViewById(R.id.nickname);
         this.imagen.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 cargarImagen();
             }
-
-
         });
-
-
+        this.user = getArguments().getParcelable("user");
+        this.rellenarUIText();
+        this.doPetitionUser();
 
         return view;
     }
@@ -104,8 +114,6 @@ public class SettingsFragment extends Fragment {
     }
 
     private void hacerFoto(){
-
-
 
         File fileImagen = new File(Environment.getExternalStorageDirectory(),RUTA_IAMGEN);
         boolean isCreada = fileImagen.exists();
@@ -152,6 +160,38 @@ public class SettingsFragment extends Fragment {
             }
         }
     }
+
+
+
+
+
+    public void doPetitionUser(){
+        StringRequest postRequest = new StringRequest(Request.Method.GET, BackendConection.SERVER+"/get-user/"+user.getId(),
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.d("Error.Response", error.toString());
+                    }
+                }
+        );
+        mRequestQueue.add(postRequest);
+    }
+
+
+    public void rellenarUIText(){
+        this.nickname.setText(this.user.getNickname());
+    }
+
 
 
 }

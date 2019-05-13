@@ -31,7 +31,7 @@ public class ChatActivity extends AppCompatActivity {
         this.mensajes = new ArrayList<>();
 
         for (int x=0;x<50;x++){
-            this.mensajes.add(new Mensaje("Hello there"+x,new User("obiwan","obi@gmail.com")));
+            this.mensajes.add(new Mensaje("Hello there"+x,new User("obiwan","obi@gmail.com","12345678")));
         }
 
         this.recyclerView = (RecyclerView) findViewById(R.id.reyclerview_message_list);
@@ -58,7 +58,7 @@ public class ChatActivity extends AppCompatActivity {
         if(messasge.equals("")){
             Toast.makeText(this,"¡Escribe algo!",Toast.LENGTH_SHORT).show();
         }else{
-            this.mensajes.add(new Mensaje(this.edittext_chatbox.getText().toString(),new User("german","german9@gmail.com")));
+            this.mensajes.add(new Mensaje(this.edittext_chatbox.getText().toString(),new User("german","german9@gmail.com","1234565789")));
 
             this.adapterListMesages = new AdapterListMesages(this.mensajes);
             this.recyclerView.setAdapter(adapterListMesages);

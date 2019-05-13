@@ -48,7 +48,12 @@ public class AddUserActivity extends AppCompatActivity {
     private View.OnClickListener listenerClickChat = new View.OnClickListener() {
         @Override
         public void onClick(View view) {
-            Toast.makeText(AddUserActivity.this,listaContact.get(recyclerView.getChildAdapterPosition(view)).getNickname(),Toast.LENGTH_SHORT).show();
+            Intent intent = new Intent(AddUserActivity.this, ProfileUserActivity.class);
+            intent.putExtra("nickname",listaContact.get(recyclerView.getChildAdapterPosition(view)).getNickname());
+            intent.putExtra("email",listaContact.get(recyclerView.getChildAdapterPosition(view)).getEmail());
+            intent.putExtra("id",listaContact.get(recyclerView.getChildAdapterPosition(view)).getId());
+            startActivity(intent);
+            //   Toast.makeText(getContext(),listaContact.get(recyclerView.getChildAdapterPosition(view)).getNickname(),Toast.LENGTH_SHORT).show();
         }
     };
 
@@ -130,11 +135,11 @@ public class AddUserActivity extends AppCompatActivity {
                         contactjson   = array.getJSONObject(i);
                         contact.setNickname(contactjson.getString("nickname"));
                         contact.setEmail(contactjson.getString("email"));
-
-
+                        contact.setId(contactjson.getString("_id"));
                         listaContact.add(contact);
                     }
             adapterContactsList = new AdapterContactsList(listaContact);
+            this.adapterContactsList.setOnClickListener(listenerClickChat);
             recyclerView.setAdapter(adapterContactsList);
                 }catch (JSONException e){
                     e.printStackTrace();

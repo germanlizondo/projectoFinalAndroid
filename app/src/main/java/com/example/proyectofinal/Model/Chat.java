@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Chat {
 
-    private UserClient transmitor;
     private Contact receptor;
     private ArrayList<Mensaje> mensajes;
 
@@ -15,13 +14,6 @@ public class Chat {
         this.receptor = receptor;
     }
 
-    public UserClient getTransmitor() {
-        return transmitor;
-    }
-
-    public void setTransmitor(UserClient transmitor) {
-        this.transmitor = transmitor;
-    }
 
     public Contact getReceptor() {
         return receptor;
