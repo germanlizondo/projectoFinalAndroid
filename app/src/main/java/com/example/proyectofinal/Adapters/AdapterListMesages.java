@@ -80,7 +80,7 @@ public class AdapterListMesages extends RecyclerView.Adapter<AdapterListMesages.
             SimpleDateFormat format = new SimpleDateFormat("HH:mm:ss");
             this.usuario.setText(mensaje.getUser().getNickname());
             this.content.setText(mensaje.getContent());
-            this.date.setText(format.format(mensaje.getDate()));
+            this.date.setText(format.format(mensaje.getDate()).toString());
         }
     }
 }

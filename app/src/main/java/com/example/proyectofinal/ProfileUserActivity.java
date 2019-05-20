@@ -3,28 +3,39 @@ package com.example.proyectofinal;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.proyectofinal.Adapters.AdapterContactsList;
 import com.example.proyectofinal.Model.Contact;
 import com.example.proyectofinal.Utilities.BackendConection;
+import com.example.proyectofinal.Utilities.Session;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 import org.w3c.dom.Text;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public class ProfileUserActivity extends AppCompatActivity {
     private Contact contacto;
     private TextView contactname;
     private TextView emailtext;
+    private Button buttonChat;
+    private Session session;
 
     private RequestQueue mRequestQueue;
     private String url = BackendConection.SERVER +"/get-user";
@@ -39,6 +50,7 @@ public class ProfileUserActivity extends AppCompatActivity {
         this.asignarTextoAUI();
         this.findUsersPetition();
 
+
     }
 
     public void initContact(){
@@ -51,8 +63,11 @@ public class ProfileUserActivity extends AppCompatActivity {
     }
 
     public void inicializarUIElements(){
+        this.session = new Session(this);
         this.contactname = (TextView) findViewById(R.id.contactname);
         this.emailtext = (TextView) findViewById(R.id.emailtext);
+        this.buttonChat = (Button)findViewById(R.id.buttonChat);
+
     }
 
     public void asignarTextoAUI(){
@@ -79,7 +94,6 @@ public class ProfileUserActivity extends AppCompatActivity {
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(urlEnvio,null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                Toast.makeText(ProfileUserActivity.this,response.toString(),Toast.LENGTH_SHORT).show();
                 parseResponseToArray(response);
             }
         }, new Response.ErrorListener() {
@@ -94,20 +108,61 @@ public class ProfileUserActivity extends AppCompatActivity {
     public void parseResponseToArray(JSONObject response){
         try{
             JSONArray array = response.getJSONArray("users");
-            Contact contact;
             JSONObject contactjson;
             for(int i=0;i<array.length();i++){
                 contactjson   = array.getJSONObject(i);
-                /*
+
                 this.contacto.setNickname(contactjson.getString("nickname"));
                 this.contacto.setEmail(contactjson.getString("email"));
                 this.contacto.setId(contactjson.getString("_id"));
-                */
+
             }
 
         }catch (JSONException e){
             e.printStackTrace();
         }
+    }
+
+
+
+    public void crearChat(View view){
+
+        this.petitcionCrearChat(this.contacto.getId());
+        startActivity(new Intent(this,MainActivity.class));
+
+    }
+
+    public void petitcionCrearChat(String id){
+        StringRequest postRequest = new StringRequest(Request.Method.POST, BackendConection.SERVER+"/new-chat",
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.d("Error.Response", error.toString());
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("transmitor",session.getUser().getId());
+                params.put("receptor",contacto.getId());
+
+
+                return params;
+            }
+        };
+        mRequestQueue.add(postRequest);
     }
 
 

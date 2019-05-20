@@ -18,6 +18,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.proyectofinal.Model.User;
 import com.example.proyectofinal.Model.UserClient;
 import com.example.proyectofinal.Utilities.BackendConection;
 import com.example.proyectofinal.Utilities.Session;
@@ -79,8 +80,9 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     private void makePetitionLogin(){
-        String name = inputNickname.getText().toString();
-        String password = inputPassword.getText().toString();
+        User user  =new User();
+        user.setNickname(inputNickname.getText().toString());
+        user.setPassword(inputPassword.getText().toString());
 
         StringRequest postRequest = new StringRequest(Request.Method.POST, BackendConection.SERVER+"/login",
                 new Response.Listener<String>()
@@ -105,8 +107,8 @@ public class LoginActivity extends AppCompatActivity {
             protected Map<String, String> getParams()
             {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("nickname",name);
-                params.put("password", password);
+                params.put("nickname",user.getNickname());
+                params.put("password", user.getPassword());
 
 
                 return params;
@@ -140,8 +142,11 @@ public class LoginActivity extends AppCompatActivity {
                 this.user.setId(obj.getString("_id"));
                 this.user.setNickname(obj.getString("nickname"));
                 this.user.setEmail(obj.getString("email"));
-                this.initSession();
-                startActivity(new Intent(this,MainActivity.class));
+                this.user.setPublicKeyString(obj.getString("publicKey"));
+                this.user.setPrivateKeyString(obj.getString("privateKey"));
+
+                      this.initSession();
+             startActivity(new Intent(this,MainActivity.class));
             }
 
 

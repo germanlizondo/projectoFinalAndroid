@@ -16,6 +16,7 @@ import android.provider.MediaStore;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 
+import android.util.Base64;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -35,11 +36,16 @@ import com.android.volley.toolbox.Volley;
 import com.example.proyectofinal.Model.UserClient;
 import com.example.proyectofinal.R;
 import com.example.proyectofinal.Utilities.BackendConection;
+import com.google.gson.JsonObject;
+import com.koushikdutta.async.future.FutureCallback;
+import com.koushikdutta.ion.Ion;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -56,6 +62,7 @@ public class SettingsFragment extends Fragment {
     private  String path = "";
     private RequestQueue mRequestQueue;
     private UserClient user;
+    private Bitmap bitmap;
 
     private TextView nickname;
 
@@ -150,12 +157,24 @@ public class SettingsFragment extends Fragment {
             switch (requestCode){
                 case CODIGO_SELECCIONA:
                     Uri miPath = data.getData();
+
                     imagen.setImageURI(miPath);
+                    sendIonImage(miPath.toString());
+                    try {
+                        bitmap = MediaStore.Images.Media.getBitmap(getContext().getContentResolver(),miPath);
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
+
+
+              //      sendImage();
                     break;
                 case CODIGO_FOTO:
                     Bundle extras = data.getExtras();
-                    Bitmap bitmap = (Bitmap) extras.get("data");
+                    bitmap = (Bitmap) extras.get("data");
                     imagen.setImageBitmap(bitmap);
+              //      sendImage();
                     break;
             }
         }
@@ -192,6 +211,64 @@ public class SettingsFragment extends Fragment {
         this.nickname.setText(this.user.getNickname());
     }
 
+    private String bitmapToString(Bitmap bitmap){
+
+        ByteArrayOutputStream array = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG,100,array);
+        byte[] imgByte = array.toByteArray();
+        String imgString = Base64.encodeToString(imgByte,Base64.DEFAULT);
+
+        return imgString;
+    }
+
+    public void sendImage(){
+        StringRequest postRequest = new StringRequest(Request.Method.POST, BackendConection.SERVER+"/uploadprofileimage",
+                new Response.Listener<String>()
+                {
+                    @Override
+                    public void onResponse(String response) {
+                        // response
+                        Log.d("Response", response);
+                    }
+                },
+                new Response.ErrorListener()
+                {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        // error
+                        Log.d("Error.Response", error.toString());
+                    }
+                }
+        ) {
+            @Override
+            protected Map<String, String> getParams()
+            {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("profileimage",bitmapToString(bitmap));
+
+                return params;
+            }
+        };
+        mRequestQueue.add(postRequest);
+    }
+
+    public void sendIonImage(String imgPath){
+        System.out.println("AAAAAAAAAAAAAAAAAAAAa"+imgPath);
+
+        System.out.println(imgPath);
+        Ion.with(getContext())
+                .load(BackendConection.SERVER+"/uploadprofileimage")
+                .setMultipartParameter("name", "source")
+                .setMultipartFile("profileimage", "image/jpeg", new File(imgPath))
+                .asJsonObject()
+                .setCallback(new FutureCallback<JsonObject>() {
+                    @Override
+                    public void onCompleted(Exception e, JsonObject result) {
+                        Toast.makeText(getContext(),"COMPLETE",Toast.LENGTH_SHORT).show();
+                        //do stuff with result
+                    }
+                });
+    }
 
 
 }

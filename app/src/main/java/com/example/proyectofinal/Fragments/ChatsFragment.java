@@ -51,6 +51,7 @@ public class ChatsFragment extends Fragment {
     private RequestQueue mRequestQueue;
 
 
+
     private SearchView.OnQueryTextListener listenerFinder = new SearchView.OnQueryTextListener() {
         @Override
         public boolean onQueryTextSubmit(String s) {
@@ -71,8 +72,9 @@ public class ChatsFragment extends Fragment {
             intentChatActivity = new Intent(getActivity(), ChatActivity.class);
             intentChatActivity.putExtra("idchat",listaChats.get(recyclerView.getChildAdapterPosition(view)).getId());
             intentChatActivity.putExtra("receptor",listaChats.get(recyclerView.getChildAdapterPosition(view)).getReceptor().getNickname());
+            intentChatActivity.putExtra("idReceptor",listaChats.get(recyclerView.getChildAdapterPosition(view)).getReceptor().getId());
             getActivity().startActivity(intentChatActivity);
-           // Toast.makeText(getContext(),listaChats.get(recyclerView.getChildAdapterPosition(view)),Toast.LENGTH_SHORT).show();
+         //   Toast.makeText(getContext(),listaChats.get(recyclerView.getChildAdapterPosition(view)).getReceptor().getId(),Toast.LENGTH_SHORT).show();
         }
     };
 

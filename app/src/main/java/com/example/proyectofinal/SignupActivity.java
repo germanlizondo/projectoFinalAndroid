@@ -1,5 +1,6 @@
 package com.example.proyectofinal;
 
+import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,6 +13,7 @@ import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.proyectofinal.Model.User;
 import com.example.proyectofinal.Utilities.BackendConection;
 
 import java.util.HashMap;
@@ -39,6 +41,11 @@ public class SignupActivity extends AppCompatActivity {
         String email = input_email.getText().toString();
         String password = input_password.getText().toString();
 
+        User user = new User();
+        user.setNickname(name);
+        user.setEmail(email);
+        user.setPassword(password);
+
         StringRequest postRequest = new StringRequest(Request.Method.POST, BackendConection.SERVER+"/new-user",
                 new Response.Listener<String>()
                 {
@@ -61,9 +68,9 @@ public class SignupActivity extends AppCompatActivity {
             protected Map<String, String> getParams()
             {
                 Map<String, String> params = new HashMap<String, String>();
-                params.put("nickname",name);
-                params.put("email", email);
-                params.put("password", password);
+                params.put("nickname",user.getNickname());
+                params.put("email", user.getEmail());
+                params.put("password", user.getPassword());
 
 
                 return params;
@@ -71,5 +78,6 @@ public class SignupActivity extends AppCompatActivity {
         };
         mRequestQueue.add(postRequest);
 
+        startActivity(new Intent(this,LoginActivity.class));
     }
 }

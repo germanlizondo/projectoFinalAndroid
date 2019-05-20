@@ -206,6 +206,8 @@
             </LinearLayout>
 
             <Button
+                android:id="@+id/buttonChat"
+                android:onClick="crearChat"
                 android:textColor="#fff"
                 android:background="@drawable/buttonstyleithgradient"
                 android:layout_marginTop="35dp"

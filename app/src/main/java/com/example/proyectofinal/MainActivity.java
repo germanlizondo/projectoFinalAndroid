@@ -1,8 +1,11 @@
 package com.example.proyectofinal;
 
+import android.Manifest;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AppCompatActivity;
 import android.support.annotation.NonNull;
@@ -16,6 +19,7 @@ import com.example.proyectofinal.Fragments.ChatsFragment;
 import com.example.proyectofinal.Fragments.SettingsFragment;
 import com.example.proyectofinal.Fragments.ContactsFragment;
 import com.example.proyectofinal.Model.UserClient;
+import com.example.proyectofinal.Services.GeolocationService;
 import com.example.proyectofinal.Utilities.Session;
 
 public class MainActivity extends AppCompatActivity {
@@ -83,7 +87,6 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         BottomNavigationView navView = findViewById(R.id.nav_view);
 
-
         this.session = new Session(this);
         this.user =  session.getUser();
 
@@ -102,10 +105,44 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
                 selectedFragment).commit();
 
-
+        requestPermissionsGeo();
 
     }
 
 
+    public void requestPermissionsGeo(){
+        if (ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED
+                && ActivityCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            requestPermissions(new String[]{
+                    Manifest.permission.ACCESS_FINE_LOCATION,Manifest.permission.ACCESS_FINE_LOCATION,
+                    Manifest.permission.ACCESS_COARSE_LOCATION
+            },10);
+            return;
+        }else{
 
+            startService(new Intent(MainActivity.this, GeolocationService.class));
+
+        }
+    }
+
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
+        switch (requestCode){
+            case 10:
+                if(grantResults.length>0 && grantResults[0]==PackageManager.PERMISSION_GRANTED){
+                    startService(new Intent(MainActivity.this, GeolocationService.class));
+                }
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        stopService(new Intent(MainActivity.this, GeolocationService.class));
+    }
 }

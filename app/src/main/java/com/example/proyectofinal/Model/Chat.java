@@ -1,5 +1,9 @@
 package com.example.proyectofinal.Model;
 
+import com.example.proyectofinal.Rsa;
+
+import java.security.PrivateKey;
+import java.security.PublicKey;
 import java.util.ArrayList;
 
 public class Chat {
@@ -7,6 +11,8 @@ public class Chat {
     private String id;
     private Contact receptor;
     private ArrayList<Mensaje> mensajes;
+    private PublicKey publicKey;
+    private PrivateKey privateKey;
 
     public Chat() {
     }
@@ -40,5 +46,19 @@ public class Chat {
         this.mensajes = mensajes;
     }
 
+    public PublicKey getPublicKey() {
+        return publicKey;
+    }
 
+    public void setPublicKey(String publicKey) {
+        this.publicKey = Rsa.getPublicKey(publicKey);
+    }
+
+    public PrivateKey getPrivateKey() {
+        return privateKey;
+    }
+
+    public void setPrivateKey(String privateKey) {
+        this.privateKey = Rsa.getPrivateKey(privateKey);
+    }
 }

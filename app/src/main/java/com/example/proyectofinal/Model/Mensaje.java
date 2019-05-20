@@ -17,6 +17,7 @@ public class Mensaje {
     public Mensaje(String content, User user) {
         this.content = content;
         this.user = user;
+
         this.date = new Date();
     }
 
@@ -57,7 +58,6 @@ public class Mensaje {
     }
 
     public void setDate(String date) {
-        System.out.println(date);
         SimpleDateFormat formatter1=new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'");
         try {
             this.date=formatter1.parse(date);
