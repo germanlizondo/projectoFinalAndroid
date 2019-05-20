@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -19,6 +20,7 @@ import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.proyectofinal.Adapters.AdapterContactsList;
 import com.example.proyectofinal.Model.Contact;
+import com.example.proyectofinal.Services.DownLoadImageTask;
 import com.example.proyectofinal.Utilities.BackendConection;
 import com.example.proyectofinal.Utilities.Session;
 
@@ -36,7 +38,7 @@ public class ProfileUserActivity extends AppCompatActivity {
     private TextView emailtext;
     private Button buttonChat;
     private Session session;
-
+    private ImageView imagenprofile;
     private RequestQueue mRequestQueue;
     private String url = BackendConection.SERVER +"/get-user";
     @Override
@@ -67,6 +69,7 @@ public class ProfileUserActivity extends AppCompatActivity {
         this.contactname = (TextView) findViewById(R.id.contactname);
         this.emailtext = (TextView) findViewById(R.id.emailtext);
         this.buttonChat = (Button)findViewById(R.id.buttonChat);
+        this.imagenprofile = (ImageView)findViewById(R.id.imagenprofile);
 
     }
 
@@ -107,16 +110,22 @@ public class ProfileUserActivity extends AppCompatActivity {
 
     public void parseResponseToArray(JSONObject response){
         try{
-            JSONArray array = response.getJSONArray("users");
-            JSONObject contactjson;
-            for(int i=0;i<array.length();i++){
-                contactjson   = array.getJSONObject(i);
+            System.out.println(response.toString());
+            JSONObject contactjson = response.getJSONObject("user");
+
 
                 this.contacto.setNickname(contactjson.getString("nickname"));
                 this.contacto.setEmail(contactjson.getString("email"));
                 this.contacto.setId(contactjson.getString("_id"));
 
-            }
+                if(contactjson.has("img")){
+                    String imgURL  = BackendConection.SERVER+"/images/"+contactjson.getString("img");
+
+                    new DownLoadImageTask(imagenprofile).execute(imgURL);
+
+                }
+
+
 
         }catch (JSONException e){
             e.printStackTrace();

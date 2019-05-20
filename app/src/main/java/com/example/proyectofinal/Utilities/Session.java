@@ -21,8 +21,7 @@ public class Session {
         preferences.edit().putString("id", user.getId()).commit();
         preferences.edit().putString("usename", user.getNickname()).commit();;
         preferences.edit().putString("email", user.getEmail()).commit();
-        preferences.edit().putString("privateKeyString",user.getPrivateKeyString()).commit();
-        preferences.edit().putString("publicKeyString",user.getPublicKeyString()).commit();
+
 
     }
 
@@ -36,8 +35,7 @@ public class Session {
         user.setNickname(usename);
         user.setEmail(email);
         user.setId(id);
-        user.setPublicKey(Rsa.getPublicKey(preferences.getString("publicKeyString","")));
-        user.setPrivateKey(Rsa.getPrivateKey(preferences.getString("privateKeyString","")));
+
 
         return user;
     }

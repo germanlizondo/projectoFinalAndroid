@@ -142,8 +142,7 @@ public class LoginActivity extends AppCompatActivity {
                 this.user.setId(obj.getString("_id"));
                 this.user.setNickname(obj.getString("nickname"));
                 this.user.setEmail(obj.getString("email"));
-                this.user.setPublicKeyString(obj.getString("publicKey"));
-                this.user.setPrivateKeyString(obj.getString("privateKey"));
+
 
                       this.initSession();
              startActivity(new Intent(this,MainActivity.class));

@@ -26,13 +26,15 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 
-import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
+import com.example.proyectofinal.Services.DownLoadImageTask;
 import com.example.proyectofinal.Model.UserClient;
 import com.example.proyectofinal.R;
 import com.example.proyectofinal.Utilities.BackendConection;
@@ -63,6 +65,7 @@ public class SettingsFragment extends Fragment {
     private RequestQueue mRequestQueue;
     private UserClient user;
     private Bitmap bitmap;
+    private TextView email;
 
     private TextView nickname;
 
@@ -77,7 +80,7 @@ public class SettingsFragment extends Fragment {
         View view = inflater.inflate(R.layout.fragment_settings, container, false);
         this.mRequestQueue = Volley.newRequestQueue(getActivity());
         this.imagen = view.findViewById(R.id.imagenprofile);
-
+        this.email = view.findViewById(R.id.email);
         this.nickname = view.findViewById(R.id.nickname);
         this.imagen.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -185,25 +188,37 @@ public class SettingsFragment extends Fragment {
 
 
     public void doPetitionUser(){
-        StringRequest postRequest = new StringRequest(Request.Method.GET, BackendConection.SERVER+"/get-user/"+user.getId(),
-                new Response.Listener<String>()
-                {
-                    @Override
-                    public void onResponse(String response) {
-                        // response
-                        Log.d("Response", response);
+
+        mRequestQueue = Volley.newRequestQueue(getActivity());
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET,BackendConection.SERVER+"/get-user/"+user.getId(),null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+
+                try {
+                    JSONObject user = response.getJSONObject("user");
+                   email.setText(user.getString("email"));
+                    if(!user.getString("img").equals(null)){
+                        String imgURL  = BackendConection.SERVER+"/images/"+user.getString("img");
+
+                        new DownLoadImageTask(imagen).execute(imgURL);
+
                     }
-                },
-                new Response.ErrorListener()
-                {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        // error
-                        Log.d("Error.Response", error.toString());
-                    }
+
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-        );
-        mRequestQueue.add(postRequest);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                VolleyLog.wtf(error.getMessage(), "utf-8");
+            }
+        });
+        mRequestQueue.add(jsonObjectRequest);
+
+
     }
 
 
@@ -253,7 +268,6 @@ public class SettingsFragment extends Fragment {
     }
 
     public void sendIonImage(String imgPath){
-        System.out.println("AAAAAAAAAAAAAAAAAAAAa"+imgPath);
 
         System.out.println(imgPath);
         Ion.with(getContext())

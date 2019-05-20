@@ -13,11 +13,9 @@ public class User implements Serializable {
     private String nickname;
     private String email;
     private String password;
-    private PublicKey publicKey;
-    private PrivateKey privateKey;
+    private String img ="";
 
-    private String publicKeyString;
-    private String privateKeyString;
+
 
     public User() {
     }
@@ -87,35 +85,12 @@ public class User implements Serializable {
         this.password = this.encriptarSha256(password);
     }
 
-    public PublicKey getPublicKey() {
-        return publicKey;
+
+    public String getImg() {
+        return img;
     }
 
-    public void setPublicKey(PublicKey publicKey) {
-        this.publicKey = publicKey;
-    }
-
-    public PrivateKey getPrivateKey() {
-        return privateKey;
-    }
-
-    public void setPrivateKey(PrivateKey privateKey) {
-        this.privateKey = privateKey;
-    }
-
-    public String getPublicKeyString() {
-        return publicKeyString;
-    }
-
-    public void setPublicKeyString(String publicKeyString) {
-        this.publicKeyString = publicKeyString;
-    }
-
-    public String getPrivateKeyString() {
-        return privateKeyString;
-    }
-
-    public void setPrivateKeyString(String privateKeyString) {
-        this.privateKeyString = privateKeyString;
+    public void setImg(String img) {
+        this.img = img;
     }
 }

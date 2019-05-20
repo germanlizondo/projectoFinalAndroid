@@ -76,6 +76,7 @@ public class MainActivity extends AppCompatActivity {
             return true;
         }else if(id==R.id.logout){
             session.logout();
+            stopService(new Intent(MainActivity.this, GeolocationService.class));
             startActivity(new Intent(this,LoginActivity.class));
         }
         return super.onOptionsItemSelected(item);
@@ -105,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
         getSupportFragmentManager().beginTransaction().replace(R.id.main_fragment,
                 selectedFragment).commit();
 
-        requestPermissionsGeo();
 
     }
 
@@ -138,6 +138,13 @@ public class MainActivity extends AppCompatActivity {
                     startService(new Intent(MainActivity.this, GeolocationService.class));
                 }
         }
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        requestPermissionsGeo();
+
     }
 
     @Override

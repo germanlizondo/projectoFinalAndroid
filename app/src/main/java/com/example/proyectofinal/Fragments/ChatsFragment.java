@@ -183,6 +183,9 @@ public class ChatsFragment extends Fragment {
                         contact.setNickname(userJson.getString("nickname"));
                         contact.setEmail(userJson.getString("email"));
                         contact.setId(userJson.getString("_id"));
+                        if(userJson.has("img")){
+                            contact.setImg(BackendConection.SERVER+"/images/"+userJson.getString("img"));
+                        }
                     }
 
                 }

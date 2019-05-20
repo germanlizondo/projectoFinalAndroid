@@ -5,10 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.example.proyectofinal.Model.Chat;
 import com.example.proyectofinal.R;
+import com.example.proyectofinal.Services.DownLoadImageTask;
 
 import java.util.ArrayList;
 
@@ -55,16 +57,20 @@ public class AdapterChatsList extends RecyclerView.Adapter<AdapterChatsList.Chat
     public class ChatViewHolder extends RecyclerView.ViewHolder {
 
         TextView titleChat;
+        ImageView person_photo;
 
         public ChatViewHolder(@NonNull View itemView) {
             super(itemView);
             this.titleChat = itemView.findViewById(R.id.titleChat);
-
+            this.person_photo = itemView.findViewById(R.id.person_photo);
 
         }
 
         public void asignarChat(Chat s) {
             this.titleChat.setText(s.getReceptor().getNickname());
+            if(!s.getReceptor().getImg().equals("")){
+                new DownLoadImageTask(this.person_photo).execute(s.getReceptor().getImg());
+            }
         }
     }
 }

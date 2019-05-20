@@ -44,7 +44,6 @@ public class ContactsFragment extends Fragment {
     private SearchView finder;
     private AdapterContactsList adapterContactsList;
     private RequestQueue mRequestQueue;
-    private StringRequest mStringRequest;
     private String url = BackendConection.SERVER +"/all-users";
     private View.OnClickListener listenerClickChat = new View.OnClickListener() {
         @Override
@@ -111,19 +110,13 @@ public class ContactsFragment extends Fragment {
                 swipeRefreshLayout.setRefreshing(false);
             }
         });
+        this.listaContact = new ArrayList<>();
+
         this.recyclerView =  view.findViewById(R.id.lista_contacts);
         this.finder =  view.findViewById(R.id.search_user);
 
         this.finder.setOnQueryTextListener(listenerFinder);
-
-
-
-
         this.recyclerView.setLayoutManager(new LinearLayoutManager(getActivity(),LinearLayoutManager.VERTICAL,false));
-
-
-
-
 
         return view;
     }
@@ -177,6 +170,9 @@ public class ContactsFragment extends Fragment {
                 contact.setNickname(contactjson.getString("nickname"));
                 contact.setEmail(contactjson.getString("email"));
                 contact.setId(contactjson.getString("_id"));
+                if(contactjson.has("img")){
+                    contact.setImg(BackendConection.SERVER+"/images/"+contactjson.getString("img"));
+                }
                 listaContact.add(contact);
             }
             adapterContactsList = new AdapterContactsList(listaContact);
